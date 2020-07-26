@@ -30,8 +30,8 @@ class diabloserv:
         self.authorized = self.database["authorized"]
         self.banned = self.database["banned"]
         self.version = "libdiablo 0.0.1"
-    def checkauth(self, userid):
-        return (self.authorized.count_documents({"userid": userid}, limit = 1) != 0)
+    def webcheckban(id):
+        return json.dumps({ "server": self.version, "response": json.dumps(self.checkauth(id)) })
     def checkban(self, userid):
         return (self.banned.count_documents({"userid": userid}, limit = 1) != 0)
     def retrieveban(self, userid):
