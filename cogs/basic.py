@@ -29,7 +29,12 @@ class Basic(commands.Cog):
     @commands.command()
     async def ping(self, ctx):
         embed=discord.Embed(title="Pong!", description=f'Pong! **Returned at:** {round(self.client.latency * 1000)}ms', color=000000)
-        embed.add_field(name="DIABLO", value="Basic", inline=False)
+        await ctx.send(embed=embed)
+
+    # Source Link
+    @commands.command()
+    async def source(self, ctx):
+        embed=discord.Embed(title="Source", url="https://github.com/incipious/DIABLO", description="Here's the source link for Diablo.", color=000000)
         await ctx.send(embed=embed)
 
     # fun command I made because I got bored
@@ -55,7 +60,6 @@ class Basic(commands.Cog):
                     'Gitchep',
                     'Dario Fulminante']
         embed=discord.Embed(title="Random Offender", description=f'A random offender is: **{random.choice(responses)}**', color=000000)
-        embed.add_field(name="DIABLO", value="Basic", inline=False)
         await ctx.send(embed=embed)
 
 def setup(client):
