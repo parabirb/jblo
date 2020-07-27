@@ -24,12 +24,26 @@ class Basic(commands.Cog):
     @commands.Cog.listener()
     async def on_member_remove(self, member):
         print(f'{member} has left the server.')
+        await ctx.send(f'{member} has left the server.')
 
     # pingy schmingy
     @commands.command()
     async def ping(self, ctx):
-        embed=discord.Embed(title="Pong!", description=f'Pong! **Returned at:** {round(self.client.latency * 1000)}ms', color=000000)
+        embed=discord.Embed(title="Pong!", description=f'**Returned at:** {round(self.client.latency * 1000)}ms', color=000000)
         await ctx.send(embed=embed)
+
+    # ID (find the ID of an individual)
+    @commands.command()
+    async def userid(self, ctx, member : discord.Member):
+        embed=discord.Embed(title=f"{member.name}'s ID:", description=f"{member.id}", color=000000)
+        await ctx.send(embed=embed)
+
+    # about
+    @commands.command()
+    async def about(self, ctx):
+        embed=discord.Embed(title="About", description="**DIABLO** is an acronym that stands for **Database Influenced Automated Ban List of Offenders.** Its purpose is to prevent predators such as zoophiles and pedophiles from joining servers with Diablo, preventing any potential harm to people who may be at risk. Diablo also serves as data collection, so we can create one of the most extensive ban lists on Discord to prevent as many predatory incidents as possible. Think of it as this way- what would be more efficient: curing an illness or preventing an illness? We believe prevention is the right course of action, because we can stop many incidents from occuring.", color=000000)
+        embed.add_field(name="DIABLO", value="A project by incipious", inline=False)
+        await ctx.send(None, embed=embed)
 
     # Source Link
     @commands.command()
