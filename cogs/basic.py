@@ -37,6 +37,14 @@ class Basic(commands.Cog):
     async def userid(self, ctx, member : discord.Member):
         embed=discord.Embed(title=f"{member.name}'s ID:", description=f"{member.id}", color=000000)
         await ctx.send(embed=embed)
+    @userid.error
+    async def userid_error(self, ctx, error):
+            if isinstance(error, commands.MissingRequiredArgument):
+                embed=discord.Embed(title="Please specify the user you want to check the UserID", description="Be sure to either tag the user or write out their nickname.", color=000000)
+                await ctx.send(embed=embed)
+            elif isinstance(error, commands.BadArgument):
+                embed=discord.Embed(title="Bad Argument", description="Be sure check that you wrote out the name correctly.", color=000000)
+                await ctx.send(embed=embed)
 
     # about
     @commands.command()
