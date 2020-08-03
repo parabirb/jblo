@@ -29,21 +29,21 @@ class Basic(commands.Cog):
     # pingy schmingy
     @commands.command()
     async def ping(self, ctx):
-        embed=discord.Embed(title="Pong!", description=f'**Returned at:** {round(self.client.latency * 1000)}ms', color=000000)
+        embed=discord.Embed(title="Pong!", description=f'**Returned at:** {round(self.client.latency * 1000)}ms', color=0xf7f7f7)
         await ctx.send(embed=embed)
 
     # ID (find the ID of an individual)
     @commands.command()
     async def userid(self, ctx, member : discord.Member):
-        embed=discord.Embed(title=f"{member.name}'s ID:", description=f"{member.id}", color=000000)
+        embed=discord.Embed(title=f"{member.name}'s ID:", description=f"{member.id}", color=0xf7f7f7)
         await ctx.send(embed=embed)
     @userid.error
     async def userid_error(self, ctx, error):
             if isinstance(error, commands.MissingRequiredArgument):
-                embed=discord.Embed(title=f"{ctx.author.name}'s ID:", description=f"{ctx.author.id}", color=000000)
+                embed=discord.Embed(title=f"{ctx.author.name}'s ID:", description=f"{ctx.author.id}", color=0xCD1F1F)
                 await ctx.send(embed=embed)
             if isinstance(error, commands.BadArgument):
-                embed=discord.Embed(title="Bad Argument", description="Be sure check that you wrote out the name correctly.", color=000000)
+                embed=discord.Embed(title="Bad Argument", description="Be sure check that you wrote out the name correctly.", color=0xCD1F1F)
                 await ctx.send(embed=embed)
 
     # about
@@ -56,7 +56,7 @@ class Basic(commands.Cog):
     # Source Link
     @commands.command()
     async def source(self, ctx):
-        embed=discord.Embed(title="Source", url="https://github.com/incipious/DIABLO", description="Here's the source link for Diablo.", color=000000)
+        embed=discord.Embed(title="Source", url="https://github.com/incipious/DIABLO", description="Here's the source link for Diablo.", color=0xf7f7f7)
         await ctx.send(embed=embed)
 
     # fun command I made because I got bored
@@ -81,7 +81,7 @@ class Basic(commands.Cog):
                     'Sweetest Sweets',
                     'Gitchep',
                     'Dario Fulminante']
-        embed=discord.Embed(title="Random Offender", description=f'A random offender is: **{random.choice(responses)}**', color=000000)
+        embed=discord.Embed(title="Random Offender", description=f'A random offender is: **{random.choice(responses)}**', color=0xf7f7f7)
         await ctx.send(embed=embed)
 
 def setup(client):
