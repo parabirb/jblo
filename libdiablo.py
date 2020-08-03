@@ -52,7 +52,8 @@ class diabloserv:
             self.banned.delete_one({ "userid": userid })
     def delauth(self, userid):
         if not(self.checkauth(userid)):
-            self.authorized.delete_one({ "userid": userid, "reason": reason })
+            self.authorized.delete_one({"userid": userid})
+
     def startwebserversync(self):
         self.app = flask.Flask(__name__)
         @self.app.route("/auth/check/<id>")
