@@ -21,37 +21,39 @@
 """
 import pymongo
 import flask
+import json
+import threading
 
 # diabloserv: a diablo server
 class diabloserv:
     def __init__(self, dblink):
         self.dbclient = pymongo.MongoClient(dblink)
-        self.database = dbclient["diablo"]
+        self.database = self.dbclient["diablo"]
         self.authorized = self.database["authorized"]
         self.banned = self.database["banned"]
         self.version = "libdiablo 0.0.1"
-    def webcheckban(id):
-        return json.dumps({ "server": self.version, "response": json.dumps(self.checkauth(id)) })
+    def checkauth(self, userid):
+        return (self.authorized.count_documents({ "userid": userid }, limit = 1) != 0)
     def checkban(self, userid):
-        return (self.banned.count_documents({"userid": userid}, limit = 1) != 0)
+        return (self.banned.count_documents({ "userid": userid }, limit = 1) != 0)
     def retrieveban(self, userid):
-        if checkban(userid):
-            return self.authorized.find_one({"userid": userid})
+        if self.checkban(userid):
+            return self.banned.find_one({ "userid": userid })
         else:
             return {}
     def addban(self, userid, reason):
-        if not(checkban(userid)):
+        if not(self.checkban(userid)):
             self.banned.insert_one({ "userid": userid, "reason": reason })
     def addauth(self, userid):
-        if not(checkauth(userid)):
-            self.authorized.insert_one({ "userid": userid, "reason": reason })
+        if not(self.checkauth(userid)):
+            self.authorized.insert_one({ "userid": userid })
     def delban(self, userid):
-        if not(checkban(userid)):
+        if not(self.checkban(userid)):
             self.banned.delete_one({ "userid": userid })
     def delauth(self, userid):
-        if not(checkauth(userid)):
+        if not(self.checkauth(userid)):
             self.authorized.delete_one({ "userid": userid, "reason": reason })
-    def startwebserver(self):
+    def startwebserversync(self):
         self.app = flask.Flask(__name__)
         @self.app.route("/auth/check/<id>")
         def webcheckauth(id):
@@ -63,6 +65,8 @@ class diabloserv:
         def webretrieveban(id):
             return json.dumps(self.retrieveban(id))
         self.app.run()
+    def startwebserver(self):
+        thread = threading.Thread(target=self.startwebserversync)
 
-#class diabloclient:
+# class diabloclient:
     # soon
