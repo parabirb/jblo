@@ -23,7 +23,7 @@ client = commands.Bot(command_prefix = 'd.')
 @client.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
-        embed=discord.Embed(title="This command does not exist", description="Use `d.help` to get a full list of commands", color=000000)
+        embed=discord.Embed(title="This command does not exist", description="Use `d.help` to get a full list of commands", color=0xCD1F1F)
         await ctx.send(embed=embed)
 
 @client.command()
@@ -38,4 +38,4 @@ for filename in os.listdir("./cogs"):
     if filename.endswith(".py"):
         client.load_extension(f"cogs.{filename[:-3]}")
 
-client.run('TOKEN')
+client.run('NzI1MDk5ODczNjQ4NzcxMTA1.XvJz4Q.9P_y0P--BpB7NDXT2rHtvLJodWg')
