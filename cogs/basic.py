@@ -14,18 +14,6 @@ class Basic(commands.Cog):
         await self.client.change_presence(status=discord.Status.do_not_disturb, activity=discord.Game("WIP"))
         print('Activated!')
 
-    # user join
-    @commands.Cog.listener()
-    async def on_member_join(self, member):
-        print(f'{member} has joined the server.')
-        await ctx.send(f'{member} has joined the server.')
-
-    # user leave
-    @commands.Cog.listener()
-    async def on_member_remove(self, member):
-        print(f'{member} has left the server.')
-        await ctx.send(f'{member} has left the server.')
-
     # pingy schmingy
     @commands.command()
     async def ping(self, ctx):
