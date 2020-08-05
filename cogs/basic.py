@@ -31,7 +31,7 @@ class Basic(commands.Cog):
                 embed=discord.Embed(title=f"{ctx.author.name}'s ID:", description=f"{ctx.author.id}", color=0xCD1F1F)
                 await ctx.send(embed=embed)
             if isinstance(error, commands.BadArgument):
-                embed=discord.Embed(title="Bad Argument", description="Be sure check that you wrote out the name correctly.", color=0xCD1F1F)
+                embed=discord.Embed(description="Be sure check that you wrote out the name correctly.", color=0xCD1F1F)
                 await ctx.send(embed=embed)
 
     # about
