@@ -16,13 +16,13 @@ class Moderation(commands.Cog):
     @kick.error
     async def kick_error(self, ctx, error):
             if isinstance(error, commands.MissingRequiredArgument):
-                embed=discord.Embed(title="Missing Argument", description="Please specify a user to kick.", color=0xCD1F1F)
+                embed=discord.Embed(description="Please specify a user to kick.", color=0xCD1F1F)
                 await ctx.send(embed=embed)
             elif isinstance(error, commands.BadArgument):
-                embed=discord.Embed(title="Bad Argument", description="Either tag the user you want to kick or be sure to check you wrote their name correctly.", color=0xCD1F1F)
+                embed=discord.Embed(description="Either tag the user you want to kick or be sure to check you wrote their name correctly.", color=0xCD1F1F)
                 await ctx.send(embed=embed)
             elif isinstance(error, commands.MissingPermissions):
-                embed=discord.Embed(title="Missing Permissions", description="You do not have the right permissions to run this command.", color=0xCD1F1F)
+                embed=discord.Embed(description="You do not have the right permissions to run this command.", color=0xCD1F1F)
                 await ctx.send(embed=embed)
 
     # Ban
@@ -35,13 +35,13 @@ class Moderation(commands.Cog):
     @ban.error
     async def ban_error(self, ctx, error):
             if isinstance(error, commands.MissingRequiredArgument):
-                embed=discord.Embed(title="Missing Argument", description="Please specify a user to ban.", color=0xCD1F1F)
+                embed=discord.Embed(description="Please specify a user to ban.", color=0xCD1F1F)
                 await ctx.send(embed=embed)
             elif isinstance(error, commands.BadArgument):
-                embed=discord.Embed(title="Bad Argument", description="Either tag the user you want to ban or be sure to check you wrote their name correctly.", color=0xCD1F1F)
+                embed=discord.Embed(description="Either tag the user you want to ban or be sure to check you wrote their name correctly.", color=0xCD1F1F)
                 await ctx.send(embed=embed)
             elif isinstance(error, commands.MissingPermissions):
-                embed=discord.Embed(title="Missing Permissions", description="You do not have the right permissions to run this command.", color=0xCD1F1F)
+                embed=discord.Embed(description="You do not have the right permissions to run this command.", color=0xCD1F1F)
                 await ctx.send(embed=embed)
 
     # unban
@@ -62,13 +62,13 @@ class Moderation(commands.Cog):
     @unban.error
     async def unban_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
-            embed=discord.Embed(title="Missing Argument", description="Please specify a user to unban.", color=0xCD1F1F)
+            embed=discord.Embed(description="Please specify a user to unban.", color=0xCD1F1F)
             await ctx.send(embed=embed)
         elif isinstance(error, commands.BadArgument):
-            embed=discord.Embed(title="Bad Argument", description="Make sure you wrote the user name and discriminator (tagline) correctly.", color=0xCD1F1F)
+            embed=discord.Embed(description="Make sure you wrote the user name and discriminator (tagline) correctly.", color=0xCD1F1F)
             await ctx.send(embed=embed)
         elif isinstance(error, commands.MissingPermissions):
-            embed=discord.Embed(title="Missing Permissions", description="You do not have the right permissions to run this command.", color=0xCD1F1F)
+            embed=discord.Embed(description="You do not have the right permissions to run this command.", color=0xCD1F1F)
             await ctx.send(embed=embed)
 
     # mute
