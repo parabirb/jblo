@@ -28,7 +28,7 @@ class Basic(commands.Cog):
     @userid.error
     async def userid_error(self, ctx, error):
             if isinstance(error, commands.MissingRequiredArgument):
-                embed=discord.Embed(title=f"{ctx.author.name}'s ID:", description=f"{ctx.author.id}", color=0xCD1F1F)
+                embed=discord.Embed(title=f"{ctx.author.name}'s ID:", description=f"{ctx.author.id}", color=0xf7f7f7)
                 await ctx.send(embed=embed)
             if isinstance(error, commands.BadArgument):
                 embed=discord.Embed(description="Be sure check that you wrote out the name correctly.", color=0xCD1F1F)
