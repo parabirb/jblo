@@ -6,6 +6,18 @@ class Moderation(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+    def muted_role_exists(self, ctx):
+        if discord.utils.get(discord.guild.roles, name="Muted"):
+            pass
+
+    # mute
+    @commands.command()
+    @commands.check(muted_role_exists)
+    @commands.has_permissions(manage_messages=True)
+    async def mute(self, ctx, member : discord.Member, role : discord.Role):
+        role = discord.utils.get(discord.guild.roles, name='Muted')
+        await ctx.add_roles(role)
+
     # Kick command
     @commands.command()
     @commands.has_permissions(kick_members=True)
@@ -70,14 +82,6 @@ class Moderation(commands.Cog):
         elif isinstance(error, commands.MissingPermissions):
             embed=discord.Embed(description="You do not have the right permissions to run this command.", color=0xCD1F1F)
             await ctx.send(embed=embed)
-
-    # mute
-#    @commands.command()
-#    @command.has_permissions(mute_members=True)
-#    async def mute(self, ctx, member : discord.Member, *, time : discord.time):
-#        role = self.discord.utils.get(member.server.roles, name='Muted')
-#        await member.mute(time=time)
-#        await ctx.send(f"**{member}** was muted for {time}")
 
 def setup(client):
     client.add_cog(Moderation(client))
