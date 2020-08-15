@@ -20,11 +20,20 @@ from discord.ext import commands
 
 client = commands.Bot(command_prefix = 'd.')
 
-@client.event
-async def on_command_error(ctx, error):
+# CommandNotFound
+@client.event()
+async def on_command_error(self, ctx, error):
     if isinstance(error, commands.CommandNotFound):
-        embed=discord.Embed(title="This command does not exist", description="Use `d.help` to get a full list of commands", color=0xCD1F1F)
+        embed = discord.Embed(title="This command does not exist", description="Use `d.help` to get a full list of commands", color=0xCD1F1F)
         await ctx.send(embed=embed)
+
+# Missing Permissions Error
+@client.event()
+async def on_command_error(self, ctx, error):
+    if isinstance(error, commands.MissingPermissions):
+        embed = discord.Embed(description="You do not have the right permissions to run this command.", color=0xCD1F1F)
+        await ctx.send(embed=embed)
+
 
 @client.command()
 async def load(ctx, extension):
