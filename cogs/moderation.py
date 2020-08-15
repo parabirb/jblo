@@ -6,17 +6,54 @@ class Moderation(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    def muted_role_exists(self, ctx):
-        if discord.utils.get(discord.guild.roles, name="Muted"):
-            pass
-
     # mute
     @commands.command()
-    @commands.check(muted_role_exists)
     @commands.has_permissions(manage_messages=True)
-    async def mute(self, ctx, member : discord.Member, role : discord.Role):
-        role = discord.utils.get(discord.guild.roles, name='Muted')
-        await ctx.add_roles(role)
+    async def mute(self, ctx, member : discord.Member):
+        for roles in ctx.guild.roles:
+            if discord.utils.get(ctx.guild.roles, name='Muted'):
+                break
+            else:
+                await ctx.guild.create_role(name="Muted")
+        muted_role = discord.utils.get(ctx.guild.roles, name='Muted')
+        await member.add_roles(muted_role)
+        embed = discord.Embed(description=f"{member.name} has been muted.", color=0xf7f7f7)
+        await ctx.send(embed=embed)
+    @mute.error
+    async def mute_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            embed=discord.Embed(description="Please specify a user to mute.", color=0xCD1F1F)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.BadArgument):
+            embed=discord.Embed(description="Either tag the user you want to mute or be sure to check you wrote their name correctly.", color=0xCD1F1F)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.MissingPermissions):
+            embed=discord.Embed(description="You do not have the right permissions to run this command.", color=0xCD1F1F)
+            await ctx.send(embed=embed)
+
+    # unmute
+    @commands.command()
+    @commands.has_permissions(manage_messages=True)
+    async def unmute(self, ctx, member : discord.Member):
+        muted_role = discord.utils.get(ctx.guild.roles, name='Muted')
+        if muted_role not in member.roles:
+            embed = discord.Embed(description="User is not muted", color=0xCD1F1F)
+            await ctx.send(embed=embed)
+        else:
+            await member.remove_roles(muted_role)
+            embed = discord.Embed(description=f"{member.name} has been unmuted.", color=0xf7f7f7)
+            await ctx.send(embed=embed)
+    @unmute.error
+    async def unmute_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            embed=discord.Embed(description="Please specify a user to unmute.", color=0xCD1F1F)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.BadArgument):
+            embed=discord.Embed(description="Either tag the user you want to mute or be sure to check you wrote their name correctly.", color=0xCD1F1F)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.MissingPermissions):
+            embed=discord.Embed(description="You do not have the right permissions to run this command.", color=0xCD1F1F)
+            await ctx.send(embed=embed)
 
     # Kick command
     @commands.command()
