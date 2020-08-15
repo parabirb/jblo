@@ -10,11 +10,8 @@ class Moderation(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def mute(self, ctx, member : discord.Member):
-        for roles in ctx.guild.roles:
-            if discord.utils.get(ctx.guild.roles, name='Muted'):
-                break
-            else:
-                await ctx.guild.create_role(name="Muted")
+        if not (discord.utils.get(ctx.guild.roles, name="Muted")):
+            await ctx.guild.create_role(name="Muted")
         muted_role = discord.utils.get(ctx.guild.roles, name='Muted')
         await member.add_roles(muted_role)
         embed = discord.Embed(description=f"{member.name} has been muted.", color=0xf7f7f7)
