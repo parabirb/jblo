@@ -8,6 +8,7 @@ class Moderation(commands.Cog):
 
     # mute
     @commands.command()
+    @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
     async def mute(self, ctx, member : discord.Member):
         if not (discord.utils.get(ctx.guild.roles, name="Muted")):
@@ -27,6 +28,7 @@ class Moderation(commands.Cog):
 
     # unmute
     @commands.command()
+    @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
     async def unmute(self, ctx, member : discord.Member):
         muted_role = discord.utils.get(ctx.guild.roles, name='Muted')
@@ -48,6 +50,7 @@ class Moderation(commands.Cog):
 
     # Kick command
     @commands.command()
+    @commands.guild_only()
     @commands.has_permissions(kick_members=True)
     async def kick(self, ctx, member : discord.Member, *,  reason=None):
         await member.kick(reason=reason)
@@ -64,6 +67,7 @@ class Moderation(commands.Cog):
 
     # Ban
     @commands.command()
+    @commands.guild_only()
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, member : discord.Member, *,  reason=None):
         await member.ban(reason=reason)
@@ -80,6 +84,7 @@ class Moderation(commands.Cog):
 
     # unban
     @commands.command()
+    @commands.guild_only()
     @commands.has_permissions(ban_members=True)
     async def unban(self, ctx, *, member):
         banned_users = await ctx.guild.bans()
