@@ -9,6 +9,7 @@ class Basic(commands.Cog):
 
     #Events
     @commands.Cog.listener()
+    @commands.guild_only()
     # activation procedure
     async def on_ready(self):
         await self.client.change_presence(status=discord.Status.do_not_disturb, activity=discord.Game("WIP"))
@@ -16,12 +17,14 @@ class Basic(commands.Cog):
 
     # pingy schmingy
     @commands.command()
+    @commands.guild_only()
     async def ping(self, ctx):
         embed=discord.Embed(title="Pong!", description=f'**Returned at:** {round(self.client.latency * 1000)}ms', color=0xf7f7f7)
         await ctx.send(embed=embed)
 
     # ID (find the ID of an individual)
     @commands.command()
+    @commands.guild_only()
     async def userid(self, ctx, member : discord.Member):
         embed=discord.Embed(title=f"{member.name}'s ID:", description=f"{member.id}", color=0xf7f7f7)
         await ctx.send(embed=embed)
@@ -36,6 +39,7 @@ class Basic(commands.Cog):
 
     # about
     @commands.command()
+    @commands.guild_only()
     async def about(self, ctx):
         embed=discord.Embed(title="About", description="**DIABLO** is an acronym that stands for **Database Influenced Automated Ban List of Offenders.** Its purpose is to prevent predators such as zoophiles and pedophiles from joining servers with Diablo, preventing any potential harm to people who may be at risk. Diablo also serves as data collection, so we can create one of the most extensive ban lists on Discord to prevent as many predatory incidents as possible. Think of it as this way- what would be more efficient: curing an illness or preventing an illness? We believe prevention is the right course of action, because we can stop many incidents from occuring.", color=000000)
         embed.add_field(name="DIABLO", value="A project by incipious", inline=False)
@@ -43,12 +47,14 @@ class Basic(commands.Cog):
 
     # Source Link
     @commands.command()
+    @commands.guild_only()
     async def source(self, ctx):
         embed=discord.Embed(title="Source", url="https://github.com/incipious/DIABLO", description="Here's the source link for Diablo.", color=0xf7f7f7)
         await ctx.send(embed=embed)
 
     # fun command I made because I got bored
     @commands.command()
+    @commands.guild_only()
     async def randomoffender(self, ctx):
         responses = ['Quantum_Kitty',
                     'Apaloosa',
