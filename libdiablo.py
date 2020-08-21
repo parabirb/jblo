@@ -1,5 +1,6 @@
 """
     libdiablo v0.0.1
+    AGPLv3
     A simple library for user blacklists that are maintained throughout multiple servers.
     This is a high level abstraction that is recommended for new users or experienced
     users who don't want to write it themselves. Please note that it is not legal to
