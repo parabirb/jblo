@@ -16,7 +16,6 @@
 
 import discord
 import os
-from libdiablo import diabloserv
 from discord.ext import commands
 
 client = commands.Bot(command_prefix = 'd.')
