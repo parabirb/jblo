@@ -11,11 +11,16 @@ class Autoban(commands.Cog):
 
     @commands.Cog.listener()
     # MAIN BOT FUNCTION, AUTO KICKS OFFENDERS
-    async def on_member_join(self, ctx, member : discord.Member, reason : diabloserv.retrieveban):
-        if diabloserv.checkban():
-            await member.ban(reason=reason)
-            embed = discord.Embed(title="`OFFENDER JOINED`", description=f"**{member.name}** has attempted to join the server, but was blocked by Diablo.\n**Reason**: {reason}", color=0xf7f7f7)
-            await ctx.send(embed=embed)
+    async def on_member_join(self, member):
+        offense = diabloserv.retrieveban(member.id)
+        if offense:
+            #if perhaps you wanted to send something to them, you'd do it here await member.send('...')
+            await member.ban(reason=offense['reason'])
+            embed = discord.Embed(title="`OFFENDER JOINED`", description=f"**{member.name}** has attempted to join the server, but was blocked by Diablo.\n**Reason**: {offense['reason']}", color=0xf7f7f7)
+            await member.guild.channels[0].send(embed=embed) 
+            """you should probably use client.get_channel(id) or 
+            discord.utils.get(member.guild.channels, name='the channel name here')
+            this just sends the message to the first channel is see's in the guild"""
 
     @commands.command()
     # report system, temp
