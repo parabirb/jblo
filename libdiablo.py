@@ -34,14 +34,12 @@ class diabloserv:
         self.banned = self.database["banned"]
         self.version = "libdiablo 0.0.1"
     def checkauth(self, userid):
-        return (self.authorized.count_documents({ "userid": userid }, limit = 1) != 0)
+        return bool(self.authorized.count_documents({ "userid": userid }))
     def checkban(self, userid):
-        return (self.banned.count_documents({ "userid": userid }, limit = 1) != 0)
+        return bool(self.banned.count_documents({ "userid": userid }))
     def retrieveban(self, userid):
         if self.checkban(userid):
             return self.banned.find_one({ "userid": userid })
-        else:
-            return {}
     def addban(self, userid, reason):
         if not(self.checkban(userid)):
             self.banned.insert_one({ "userid": userid, "reason": reason })

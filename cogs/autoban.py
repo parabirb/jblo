@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from libdiablo import diabloserv
+import __main__
 
 # STILL A WIP, NOTHING IS FUNCTIONAL
 
@@ -12,7 +12,7 @@ class Autoban(commands.Cog):
     @commands.Cog.listener()
     # MAIN BOT FUNCTION, AUTO KICKS OFFENDERS
     async def on_member_join(self, member):
-        offense = diabloserv.retrieveban(member.id)
+        offense = __main__.serv.retrieveban(member.id)
         if offense:
             #if perhaps you wanted to send something to them, you'd do it here await member.send('...')
             await member.ban(reason=offense['reason'])
