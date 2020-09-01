@@ -12,7 +12,7 @@ class Basic(commands.Cog):
     @commands.guild_only()
     # activation procedure
     async def on_ready(self):
-        await self.client.change_presence(status=discord.Status.do_not_disturb, activity=discord.Game("WIP"))
+        await self.client.change_presence(status=discord.Status.do_not_disturb, activity=discord.Game("September 19"))
         print('Activated!')
 
     # pingy schmingy
@@ -21,6 +21,14 @@ class Basic(commands.Cog):
     async def ping(self, ctx):
         embed=discord.Embed(title="Pong!", description=f'**Returned at:** {round(self.client.latency * 1000)}ms', color=0xf7f7f7)
         await ctx.send(embed=embed)
+
+    @commands.command()
+    @commands.guild_only()
+    @commands.bot_has_guild_permissions()
+    async def important(self, ctx):
+        if ctx.author.id == 747964541664755762:
+            embed = discord.Embed(title="`Important Announcement`", description="@everyone This is an important announcement from the bot developer, **incipious**. My main account (incipious#7492, ID: 179696307470991360) was deactivated. I am not revealing the terms of my ban, but I have a few issues at hand here. 1) Diablo is registered on my main account, but that shouldn't be an issue considering that I can always port over Diablo to a new token on a new account. I have filed an appeal with Discord but I am not expecting to regain access to my account anytime soon, so in the scenario that I don't get reinstated, we will have to remake the Diablo on my new account plus a new token. Don't worry, I have all the code saved on my computer so no progress will be lost. I will fill you in more once I get more information.",color=0xf7f7f7)
+            await ctx.send(embed=embed)
 
     # ID (find the ID of an individual)
     @commands.command()
