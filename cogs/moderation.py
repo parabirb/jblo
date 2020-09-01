@@ -1,5 +1,11 @@
 import discord
 from discord.ext import commands
+from pymongo import MongoClient
+import __main__
+
+cluster = MongoClient('not posting that')
+db = cluster["DIABLO"]
+collection = db["Warnings"]
 
 class Moderation(commands.Cog):
 
@@ -52,18 +58,68 @@ class Moderation(commands.Cog):
     @commands.command()
     @commands.guild_only()
     @commands.has_permissions(kick_members=True)
-    async def kick(self, ctx, member : discord.Member, *,  reason=None):
+    async def kick(self, ctx, member : discord.Member, *, reason=None):
         await member.kick(reason=reason)
-        embed=discord.Embed(title=f"{member.name} Kicked", description=f"{member} was kicked for {reason}", color=0xf7f7f7)
+        embed=discord.Embed(title=f":boot: {member.name} Kicked", description=f"{member} was kicked for {reason}", color=0xf7f7f7)
         await ctx.send(embed=embed)
     @kick.error
     async def kick_error(self, ctx, error):
             if isinstance(error, commands.MissingRequiredArgument):
-                embed=discord.Embed(description="Please specify a user to kick.", color=0xCD1F1F)
+                embed=discord.Embed(description=":octagonal_sign: Please specify a user to kick.", color=0xCD1F1F)
                 await ctx.send(embed=embed)
             elif isinstance(error, commands.BadArgument):
-                embed=discord.Embed(description="Either tag the user you want to kick or be sure to check you wrote their name correctly.", color=0xCD1F1F)
+                embed=discord.Embed(description=":octagonal_sign: Either tag the user you want to kick or be sure to check you wrote their name correctly.", color=0xCD1F1F)
                 await ctx.send(embed=embed)
+
+    # Warn
+    @commands.command()
+    @commands.guild_only()
+    @commands.has_permissions(manage_messages=True)
+    @commands.cooldown(1, 120, commands.BucketType.user)
+    async def warn(self, ctx, member : discord.Member, *, reason=None):
+        if reason is None:
+            embed = discord.Embed(description=f":octagonal_sign: Please provide a reason.", color=0xCD1F1F)
+            await ctx.send(embed=embed)
+        else:
+            embed = discord.Embed(title=f":warning: Warning", description=f"You have been warned in **{ctx.guild.name}**\n`Reason:` **{reason}**", color=0xf7f7f7)
+            await member.send(embed=embed)
+            warning = {"userid":member.id}
+            collection.insert_one(warning)
+    @warn.error
+    async def warn_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            embed = discord.Embed(description=":octagonal_sign: Please specify a user to warn.", color=0xCD1F1F)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.BadArgument):
+            embed = discord.Embed(description=":octagonal_sign: Either tag the user you want to warn or be sure to check you wrote their name correctly.", color=0xCD1F1F)
+            await ctx.send(embed=embed)
+
+    @commands.command()
+    @commands.guild_only()
+    @commands.has_permissions(manage_messages=True)
+    @commands.cooldown(1, 15, commands.BucketType.user)
+    async def warnings(self, ctx, member : discord.Member):
+        infractions = collection.count_documents({"userid":member.id})
+        if infractions > 1:
+            embed = discord.Embed(title=f":warning: Infractions:", description=f"**{member.name}** has **{infractions} warnings**", color=0xf7f7f7)
+            embed.add_field(name="NOTE:", value="Currently Diablo does NOT have a server-specific warnings count. The warning you see accounts for all warnings a person has.", inline=False)
+            await ctx.send(embed=embed)
+        elif infractions == 1:
+            embed = discord.Embed(title=f":warning: Infractions:",  description=f"**{member.name}** has **1 warning**", color=0xf7f7f7)
+            embed.add_field(name="NOTE:", value="Currently Diablo does NOT have a server-specific warnings count. The warning you see accounts for all warnings a person has.", inline=False)
+            await ctx.send(embed=embed)
+        else:
+            embed = discord.Embed(title=f":warning: Infractions:", description=f"**{member.name}** has **0 warnings** :tada:", color=0xf7f7f7)
+            embed.add_field(name="NOTE:", value="Currently Diablo does NOT have a server-specific warnings count. The warning you see accounts for all warnings a person has.", inline=False)
+            await ctx.send(embed=embed)
+    @warnings.error
+    async def warnings_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            embed = discord.Embed(description=":octagonal_sign: Please specify a user to check warnings of.", color=0xCD1F1F)
+            await ctx.send(embed=embed)
+        elif isinstance(error, commands.BadArgument):
+            embed = discord.Embed( description=":octagonal_sign: Either tag the user you want to check warnings of or check you wrote their name correctly.", color=0xCD1F1F)
+            await ctx.send(embed=embed)
 
     # Ban
     @commands.command()
