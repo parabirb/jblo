@@ -4,8 +4,8 @@ from pymongo import MongoClient
 import __main__
 
 cluster = MongoClient('not posting that')
-db = cluster["DIABLO"]
-collection = db["Warnings"]
+db = cluster["db"]
+collection = db["collection"]
 
 class Moderation(commands.Cog):
 
