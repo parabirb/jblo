@@ -24,25 +24,28 @@ class Basic(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    @commands.bot_has_guild_permissions()
-    async def important(self, ctx):
-        if ctx.author.id == 747964541664755762:
-            embed = discord.Embed(title="`Important Announcement`", description="@everyone This is an important announcement from the bot developer, **incipious**. My main account (incipious#7492, ID: 179696307470991360) was deactivated. I am not revealing the terms of my ban, but I have a few issues at hand here. 1) Diablo is registered on my main account, but that shouldn't be an issue considering that I can always port over Diablo to a new token on a new account. I have filed an appeal with Discord but I am not expecting to regain access to my account anytime soon, so in the scenario that I don't get reinstated, we will have to remake the Diablo on my new account plus a new token. Don't worry, I have all the code saved on my computer so no progress will be lost. I will fill you in more once I get more information.",color=0xf7f7f7)
-            await ctx.send(embed=embed)
-
-    # ID (find the ID of an individual)
-    @commands.command()
-    @commands.guild_only()
-    async def userid(self, ctx, member : discord.Member):
-        embed=discord.Embed(title=f"{member.name}'s ID:", description=f"{member.id}", color=0xf7f7f7)
+    async def whois(self, ctx, member : discord.Member):
+        embed=discord.Embed(title=f"{member}'s Information",
+                            set_image=member.avatar_url,
+                            color=0xFBFBFB)
+        embed.add_field(name='User ID:', value=member.id, inline=False)
+        embed.add_field(name='Nickname:', value=member.display_name, inline=False)
+        embed.add_field(name='Joined server at:', value=member.joined_at, inline=False)
+        embed.add_field(name='Created at:', value=member.created_at, inline=False)
         await ctx.send(embed=embed)
-    @userid.error
-    async def userid_error(self, ctx, error):
+    @whois.error
+    async def whois_error(self, ctx, error):
             if isinstance(error, commands.MissingRequiredArgument):
-                embed=discord.Embed(title=f"{ctx.author.name}'s ID:", description=f"{ctx.author.id}", color=0xf7f7f7)
+                embed = discord.Embed(title=f"{ctx.author}'s Information",
+                                      set_image=ctx.author.avatar_url,
+                                      color=0xFBFBFB)
+                embed.add_field(name='User ID:', value=ctx.author.id, inline=False)
+                embed.add_field(name='Nickname:', value=ctx.author.display_name, inline=False)
+                embed.add_field(name='Joined server at:', value=ctx.author.joined_at, inline=False)
+                embed.add_field(name='Created at:', value=ctx.author.created_at, inline=False)
                 await ctx.send(embed=embed)
             if isinstance(error, commands.BadArgument):
-                embed=discord.Embed(description="Be sure check that you wrote out the name correctly.", color=0xCD1F1F)
+                embed=discord.Embed(description=":octagonal_sign: Be sure check that you wrote out the name correctly.", color=0xCD1F1F)
                 await ctx.send(embed=embed)
 
     # about
