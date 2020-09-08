@@ -3,8 +3,8 @@ from discord.ext import commands
 from pymongo import MongoClient
 
 cluster = MongoClient('nice try')
-db = cluster["DIABLO"]
-collection = db["Offender List"]
+db = cluster["db"]
+collection = db["collection"]
 
 class Autoban(commands.Cog):
 
@@ -39,25 +39,77 @@ class Autoban(commands.Cog):
         if offense is not None:
             await member.ban(reason=offense["reason"])
             bans_channel = discord.utils.get(member.guild.text_channels, name='diablobans')
-            if not bans_channel:
+            if bans_channel is None:
                 overwrites = {
                     member.guild.default_role: discord.PermissionOverwrite(send_messages=False)
                 }
-                bans_channel = await member.guild.create_text_channel(name="diablobans", topic="Lists the offenders that join the server. :warning: MIGHT BE NSFW, DISABLE AT OWN RISK.", overwrites=overwrites, nsfw=True)
-            embed = discord.Embed(title=":axe: `OFFENDER JOINED`", description=f'**{member.name}** has attempted to join the server, but was blocked by Diablo.\n`Reason`: **{offense["reason"]}**', color=0xf7f7f7)
+                bans_channel = await member.guild.create_text_channel(
+                    name="diablobans",
+                    topic="Lists the offenders that join the server. :warning: MIGHT BE NSFW, DISABLE AT OWN RISK.",
+                    overwrites=overwrites,
+                    nsfw=True
+                )
+            embed = discord.Embed(
+                title=":axe: OFFENDER JOINED",
+                description=f'**{member.name}** has attempted to join the server, but was blocked by Diablo.',
+                timestamp=member.joined_at,
+                color=0xf7f7f7
+            )
+            embed.add_field(name='Reason', value=str(offense["reason"]), inline=False)
             await bans_channel.send(embed=embed)
+
+    @commands.Cog.listener()
+    async def on_guild_join(self, guild):
+        self.server_check.start(guild)
+        print("Banloop active.") # I created this so I could test if the loop was functioning
+
+    # Checks for predators that came into servers before being added to Diablo
+    @tasks.loop(minutes=1.0)
+    async def server_check(self, guild):
+        server_members = [member.id for member in guild.members]
+        offense = collection.find({"userid":{"$in":server_members}})
+        if offense is not None:
+
+            for person in offense:
+                member_object = discord.utils.get(guild.members, id=person["userid"])
+                await member_object.ban(reason=person["reason"])
+
+                bans_channel = discord.utils.get(guild.text_channels, name='diablobans')
+                if bans_channel is None:
+                    overwrites = {
+                        guild.default_role: discord.PermissionOverwrite(send_messages=False)
+                    }
+                    bans_channel = await guild.create_text_channel(
+                        name="diablobans",
+                        topic="Lists the offenders that join the server. :warning: MIGHT BE NSFW, DISABLE AT OWN RISK.",
+                        overwrites=overwrites,
+                        nsfw=True
+                    )
+                embed = discord.Embed(
+                    title=":axe: OFFENDER JOINED",
+                    description=f'**{member_object.name}** was spotted by Diablo and was banned',
+                    color=0xf7f7f7
+                )
+                embed.add_field(name='Reason', value=str(person["reason"]), inline=False)
+
+                await bans_channel.send(embed=embed)
 
     @commands.command()
     # report system, temp
     async def report(self, ctx):
-        embed = discord.Embed(title="`REPORT`", description="Please use this link for temporary reporting purposes", url='not posting url', color=0xf7f7f7)
+        embed = discord.Embed(title="`REPORT`", description="Please use this link for temporary reporting purposes", url='URL', color=0xf7f7f7)
         await ctx.author.send(embed=embed)
 
+    # Total number of Diablo offenders
     @commands.command()
     @commands.guild_only()
     async def offenders(self, ctx):
         offenders = collection.count_documents({})
-        embed = discord.Embed(title=":axe: Offenders", description=f'There are exactly **{offenders} offenders** on Diablo.', color=0xf7f7f7)
+        embed = discord.Embed(
+            title=":axe: Offenders",
+            description=f'There are exactly **{offenders} offenders** on Diablo.',
+            color=0xf7f7f7
+        )
         await ctx.send(embed=embed)
 
 def setup(client):
