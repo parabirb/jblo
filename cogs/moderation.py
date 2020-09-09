@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
 from pymongo import MongoClient
-import __main__
 
 cluster = MongoClient('not posting that')
 db = cluster["db"]
