@@ -24,7 +24,7 @@ class Autoban(commands.Cog):
             await ctx.guild.create_text_channel(name="diablobans", topic="Lists the offenders that join the server. :warning: MIGHT BE NSFW, DISABLE AT OWN RISK.", overwrites=overwrites, nsfw=True)
             embed = discord.Embed(
                 description=":thumbsup: Channel successfully created. The server will be notified if an offender joins.",
-                color=0xFFC900)
+                color=0x7289da)
             await ctx.send(embed=embed)
         else:
             embed = discord.Embed(
@@ -53,7 +53,7 @@ class Autoban(commands.Cog):
                 title=":axe: OFFENDER JOINED",
                 description=f'**{member.name}** has attempted to join the server, but was blocked by Diablo.',
                 timestamp=member.joined_at,
-                color=0xf7f7f7
+                color=0x7289da
             )
             embed.add_field(name='Reason', value=str(offense["reason"]), inline=False)
             await bans_channel.send(embed=embed)
@@ -61,10 +61,10 @@ class Autoban(commands.Cog):
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
         self.server_check.start(guild)
-        print("Banloop active.") # I created this so I could test if the loop was functioning
+        print("Banloop active.")
 
     # Checks for predators that came into servers before being added to Diablo
-    @tasks.loop(minutes=1.0)
+    @tasks.loop(minutes=5.0)
     async def server_check(self, guild):
         server_members = [member.id for member in guild.members]
         offense = collection.find({"userid":{"$in":server_members}})
@@ -88,7 +88,7 @@ class Autoban(commands.Cog):
                 embed = discord.Embed(
                     title=":axe: OFFENDER JOINED",
                     description=f'**{member_object.name}** was spotted by Diablo and was banned',
-                    color=0xf7f7f7
+                    color=0x7289da
                 )
                 embed.add_field(name='Reason', value=str(person["reason"]), inline=False)
 
@@ -108,9 +108,10 @@ class Autoban(commands.Cog):
         embed = discord.Embed(
             title=":axe: Offenders",
             description=f'There are exactly **{offenders} offenders** on Diablo.',
-            color=0xf7f7f7
+            color=0x7289da
         )
         await ctx.send(embed=embed)
 
 def setup(client):
     client.add_cog(Autoban(client))
+
