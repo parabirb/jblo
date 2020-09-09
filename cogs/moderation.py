@@ -20,7 +20,7 @@ class Moderation(commands.Cog):
             await ctx.guild.create_role(name="Muted")
         muted_role = discord.utils.get(ctx.guild.roles, name='Muted')
         await member.add_roles(muted_role)
-        embed = discord.Embed(description=f"{member.name} has been muted.", color=0xf7f7f7)
+        embed = discord.Embed(description=f"{member.name} has been muted.", color=0x7289da)
         await ctx.send(embed=embed)
     @mute.error
     async def mute_error(self, ctx, error):
@@ -42,7 +42,7 @@ class Moderation(commands.Cog):
             await ctx.send(embed=embed)
         else:
             await member.remove_roles(muted_role)
-            embed = discord.Embed(description=f"{member.name} has been unmuted.", color=0xf7f7f7)
+            embed = discord.Embed(description=f"{member.name} has been unmuted.", color=0x7289da)
             await ctx.send(embed=embed)
     @unmute.error
     async def unmute_error(self, ctx, error):
@@ -59,7 +59,7 @@ class Moderation(commands.Cog):
     @commands.has_permissions(kick_members=True)
     async def kick(self, ctx, member : discord.Member, *, reason=None):
         await member.kick(reason=reason)
-        embed=discord.Embed(title=f":boot: {member.name} Kicked", description=f"{member} was kicked for {reason}", color=0xf7f7f7)
+        embed=discord.Embed(title=f":boot: {member.name} Kicked", description=f"{member} was kicked for {reason}", color=0x7289da)
         await ctx.send(embed=embed)
     @kick.error
     async def kick_error(self, ctx, error):
@@ -80,7 +80,11 @@ class Moderation(commands.Cog):
             embed = discord.Embed(description=f":octagonal_sign: Please provide a reason.", color=0xCD1F1F)
             await ctx.send(embed=embed)
         else:
-            embed = discord.Embed(title=f":warning: Warning", description=f"You have been warned in **{ctx.guild.name}**\n`Reason:` **{reason}**", color=0xf7f7f7)
+            embed = discord.Embed(
+                title=f":warning: Warning",
+                description=f"You have been warned in **{ctx.guild.name}**\n`Reason:` **{reason}**",
+                color=0x7289da
+            )
             await member.send(embed=embed)
             warning = {"userid":member.id}
             collection.insert_one(warning)
@@ -100,15 +104,15 @@ class Moderation(commands.Cog):
     async def warnings(self, ctx, member : discord.Member):
         infractions = collection.count_documents({"userid":member.id})
         if infractions > 1:
-            embed = discord.Embed(title=f":warning: Infractions:", description=f"**{member.name}** has **{infractions} warnings**", color=0xf7f7f7)
+            embed = discord.Embed(title=f":warning: Infractions:", description=f"**{member.name}** has **{infractions} warnings**", color=0x7289da)
             embed.add_field(name="NOTE:", value="Currently Diablo does NOT have a server-specific warnings count. The warning you see accounts for all warnings a person has.", inline=False)
             await ctx.send(embed=embed)
         elif infractions == 1:
-            embed = discord.Embed(title=f":warning: Infractions:",  description=f"**{member.name}** has **1 warning**", color=0xf7f7f7)
+            embed = discord.Embed(title=f":warning: Infractions:",  description=f"**{member.name}** has **1 warning**", color=0x7289da)
             embed.add_field(name="NOTE:", value="Currently Diablo does NOT have a server-specific warnings count. The warning you see accounts for all warnings a person has.", inline=False)
             await ctx.send(embed=embed)
         else:
-            embed = discord.Embed(title=f":warning: Infractions:", description=f"**{member.name}** has **0 warnings** :tada:", color=0xf7f7f7)
+            embed = discord.Embed(title=f":warning: Infractions:", description=f"**{member.name}** has **0 warnings** :tada:", color=0x7289da)
             embed.add_field(name="NOTE:", value="Currently Diablo does NOT have a server-specific warnings count. The warning you see accounts for all warnings a person has.", inline=False)
             await ctx.send(embed=embed)
     @warnings.error
@@ -126,7 +130,7 @@ class Moderation(commands.Cog):
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, member : discord.Member, *,  reason=None):
         await member.ban(reason=reason)
-        embed=discord.Embed(title=f"{member.name} Banned", description=f"{member} was banned for {reason}", color=0xf7f7f7)
+        embed=discord.Embed(title=f"{member.name} Banned", description=f"{member} was banned for {reason}", color=0x7289da)
         await ctx.send(embed=embed)
     @ban.error
     async def ban_error(self, ctx, error):
@@ -150,7 +154,11 @@ class Moderation(commands.Cog):
 
             if (user.name, user.discriminator) == (member_name, member_discriminator):
                 await ctx.guild.unban(user)
-                embed=discord.Embed(title=f"{member.name} was unbanned.", description=f"{member.name} was unbanned banned from the server.", color=0xf7f7f7)
+                embed=discord.Embed(
+                    title=f"{member.name} was unbanned.",
+                    description=f"{member.name} was unbanned banned from the server.",
+                    color=0x7289da
+                )
                 await ctx.send(embed=embed)
                 return
     @unban.error
@@ -164,3 +172,4 @@ class Moderation(commands.Cog):
 
 def setup(client):
     client.add_cog(Moderation(client))
+
