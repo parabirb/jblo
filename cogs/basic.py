@@ -1,6 +1,7 @@
 import discord
 import random
 from discord.ext import commands
+import datetime
 
 class Basic(commands.Cog):
 
@@ -15,6 +16,39 @@ class Basic(commands.Cog):
         await self.client.change_presence(status=discord.Status.do_not_disturb, activity=discord.Game("September 19"))
         print('Activated!')
 
+    # Message sent when Diablo joins.
+    @commands.Cog.listener()
+    async def on_guild_join(self, guild):
+        embed=discord.Embed(
+            title="Thanks for adding Diablo!",
+            description=f"Thanks for adding Diablo to {guild.name}, here's some information on Diablo:",
+            color=0x7289da,
+            timestamp=datetime.datetime.utcnow()
+        )
+        embed.add_field(
+            name='About Diablo',
+            value='Diablo is an open-source public discord ban bot. '
+                  'In simpler terms: Diablo uses data submitted by users to create a safer environment for all discord users in servers that have Diablo installed.'
+                  'This means the average user can report certain users which they believe are breaking our guidelines (and Discord TOS) '
+                  'and we will potentially add them to our global database of offenders. '
+                  'If you want an exact number of offenders on Diablo, you can run `d.offenders` to get an exact number.',
+            inline=False
+        )
+        embed.add_field(
+            name='Diablo Reporting',
+            value="You can run the command `d.report` and you will receive a DM from the bot asking you to fill out a form. "
+                  "Once you fill out the submission, our mods will be right at work to determine if the person you reported breaks our guidelines and/or Discord TOS.",
+            inline=False
+        )
+        embed.add_field(
+            name='Bot Prefix',
+            value="The bot prefix is: `d.`",
+            inline=False
+        )
+        embed.set_image(url='https://i.imgur.com/Z6swN2y.png')
+        send_channel = guild.text_channels[0]
+        await send_channel.send(embed=embed)
+
     # pingy schmingy
     @commands.command()
     @commands.guild_only()
@@ -26,8 +60,10 @@ class Basic(commands.Cog):
     @commands.guild_only()
     async def whois(self, ctx, member : discord.Member):
         embed=discord.Embed(title=f"{member}'s Information",
-                            set_image=member.avatar_url,
                             color=0x7289da)
+        embed.set_thumbnail(
+            url=member.avatar_url
+        )
         embed.add_field(name='User ID:', value=member.id, inline=False)
         embed.add_field(name='Nickname:', value=member.display_name, inline=False)
         embed.add_field(name='Joined server at:', value=member.joined_at, inline=False)
@@ -37,8 +73,10 @@ class Basic(commands.Cog):
     async def whois_error(self, ctx, error):
             if isinstance(error, commands.MissingRequiredArgument):
                 embed = discord.Embed(title=f"{ctx.author}'s Information",
-                                      set_image=ctx.author.avatar_url,
                                       color=0xFBFBFB)
+                embed.set_thumbnail(
+                    url=ctx.author.avatar_url
+                )
                 embed.add_field(name='User ID:', value=ctx.author.id, inline=False)
                 embed.add_field(name='Nickname:', value=ctx.author.display_name, inline=False)
                 embed.add_field(name='Joined server at:', value=ctx.author.joined_at, inline=False)
@@ -65,36 +103,6 @@ class Basic(commands.Cog):
     @commands.guild_only()
     async def source(self, ctx):
         embed=discord.Embed(title="Source", url="https://github.com/incipious/DIABLO", description="Here's the source link for Diablo.", color=0x7289da)
-        await ctx.send(embed=embed)
-
-    # fun command I made because I got bored
-    @commands.command()
-    @commands.guild_only()
-    async def randomoffender(self, ctx):
-        responses = ['Quantum_Kitty',
-                    'Apaloosa',
-                    'changed_mikey',
-                    'Belladonna (shithead)_Zetta',
-                    'chocobo13',
-                    'DearestDoggie',
-                    'paintedlykon',
-                    'seby the fuckhead',
-                    'the entire cast of zooier than thou',
-                    'elle, stella, or whatever her bitchass name is',
-                    'Jeffrey Epstein',
-                    'Mickey Mouse',
-                    'Forest Fire',
-                    'ZooStories.farm',
-                    'Lycaon',
-                    'MilkyBella',
-                    'Sweetest Sweets',
-                    'Gitchep',
-                    'Dario Fulminante']
-        embed=discord.Embed(
-            title="Random Offender",
-            description=f'A random offender is: **{random.choice(responses)}**',
-            color=0x7289da
-        )
         await ctx.send(embed=embed)
 
 def setup(client):
