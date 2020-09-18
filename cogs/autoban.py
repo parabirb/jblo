@@ -1,10 +1,11 @@
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 from pymongo import MongoClient
+import datetime
 
 cluster = MongoClient('nice try')
-db = cluster["db"]
-collection = db["collection"]
+db = cluster["lol"]
+collection = db["lol"]
 
 class Autoban(commands.Cog):
 
@@ -24,7 +25,9 @@ class Autoban(commands.Cog):
             await ctx.guild.create_text_channel(name="diablobans", topic="Lists the offenders that join the server. :warning: MIGHT BE NSFW, DISABLE AT OWN RISK.", overwrites=overwrites, nsfw=True)
             embed = discord.Embed(
                 description=":thumbsup: Channel successfully created. The server will be notified if an offender joins.",
-                color=0x7289da)
+                color=0x7289da,
+                timestamp=datetime.datetime.utcnow()
+            )
             await ctx.send(embed=embed)
         else:
             embed = discord.Embed(
@@ -50,11 +53,12 @@ class Autoban(commands.Cog):
                     nsfw=True
                 )
             embed = discord.Embed(
-                title=":axe: OFFENDER JOINED",
                 description=f'**{member.name}** has attempted to join the server, but was blocked by Diablo.',
                 timestamp=member.joined_at,
                 color=0x7289da
             )
+            embed.set_thumbnail(url=member.avatar_url)
+            embed.set_author(name='OFFENDER JOINED', icon_url=member.avatar_url)
             embed.add_field(name='Reason', value=str(offense["reason"]), inline=False)
             await bans_channel.send(embed=embed)
 
@@ -86,18 +90,19 @@ class Autoban(commands.Cog):
                         nsfw=True
                     )
                 embed = discord.Embed(
-                    title=":axe: OFFENDER JOINED",
                     description=f'**{member_object.name}** was spotted by Diablo and was banned',
-                    color=0x7289da
+                    color=0x7289da,
+                    timestamp=datetime.datetime.utcnow()
                 )
+                embed.set_thumbnail(url=member_object.avatar_url)
+                embed.set_author(name='OFFENDER JOINED', icon_url=member_object.avatar_url)
                 embed.add_field(name='Reason', value=str(person["reason"]), inline=False)
-
                 await bans_channel.send(embed=embed)
 
     @commands.command()
     # report system, temp
     async def report(self, ctx):
-        embed = discord.Embed(title="`REPORT`", description="Please use this link for temporary reporting purposes", url='URL', color=0xf7f7f7)
+        embed = discord.Embed(title="`REPORT`", description="Please use this link for temporary reporting purposes", url='LINK', color=0xf7f7f7)
         await ctx.author.send(embed=embed)
 
     # Total number of Diablo offenders
@@ -108,10 +113,10 @@ class Autoban(commands.Cog):
         embed = discord.Embed(
             title=":axe: Offenders",
             description=f'There are exactly **{offenders} offenders** on Diablo.',
-            color=0x7289da
+            color=0x7289da,
+            timestamp=datetime.datetime.utcnow()
         )
         await ctx.send(embed=embed)
 
 def setup(client):
     client.add_cog(Autoban(client))
-
