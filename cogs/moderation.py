@@ -2,9 +2,9 @@ import discord
 from discord.ext import commands
 from pymongo import MongoClient
 
-cluster = MongoClient('not posting that')
-db = cluster["db"]
-collection = db["collection"]
+cluster = MongoClient('lol')
+db = cluster["lol"]
+collection = db["lol"]
 
 class Moderation(commands.Cog):
 
@@ -172,4 +172,3 @@ class Moderation(commands.Cog):
 
 def setup(client):
     client.add_cog(Moderation(client))
-
