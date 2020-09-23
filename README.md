@@ -14,7 +14,7 @@ The following is a list of commands that Diablo has. You can use `d.help` for a 
 ### Autoban
 #### Bot's main function alongside commands pertaining to it.
 - `diablobans` - Creates a diablobans log channel (if there is none) OPTIONAL
-- `offender`s - Gives a number of the # of offenders on Diablo
+- `offenders` - Gives a number of the # of offenders on Diablo
 - `report` - Submit a Diablo report
 
 ### Basic
