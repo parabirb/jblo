@@ -5,7 +5,7 @@ DIABLO syncs up with our databases on predators, such as pedophiles and zoophile
 Our bot is designed to source data from the public to create a comprehensive database which can potentially later be used to create a network of bots that can be used to close off any entrances that predators might walk through. The more doors we close on predators, we progress towards deplatformation of certain groups such as pedophiles and zoophiles from ever spreading their abusive ideology across the internet and affecting vulnerable individuals.
 
 ## Invite Diablo to your server:
-https://discord.com/api/oauth2/authorize?client_id=751888323517349908&permissions=8&scope=bot
+https://top.gg/bot/751888323517349908
 
 ## How Diablo Works
 ### The way Diablo works is very simple; you don't need to configure anything, except for maybe one thing.
