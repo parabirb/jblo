@@ -40,3 +40,4 @@ The following is a list of commands that Diablo has. You can use `d.help` for a 
 - `ummute [member]` - Unmutes a member
 - `warn [member] [reason]` - Gives a member an infraction for doing something bad. **WARNING: WARNS ARE GLOBAL. WARNINGS WILL ACCOUNT FOR ALL WARNINGS USER HAS RECIEVED WITH DIABLO**
 - `warnings [member]` - Retrieves the amount of warnings a member has. **WARNING: WARNS ARE GLOBAL. WARNINGS WILL ACCOUNT FOR ALL WARNINGS USER HAS RECIEVED WITH DIABLO**
+- `purge [amount]`- Clears a specific amount of messages. Default is 1.
