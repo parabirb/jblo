@@ -18,7 +18,8 @@ import discord
 import os
 from discord.ext import commands
 
-client = commands.Bot(command_prefix = 'd.')
+intents = discord.Intents.all()
+client = commands.Bot(command_prefix = 'd.', intents=intents)
 
 # CommandNotFound
 @client.event
@@ -42,14 +43,17 @@ async def on_command_error(ctx, error):
         await ctx.send(embed=embed)
 
 @client.command()
+@commands.guild_only()
 async def load(ctx, extension):
     client.load_extension(f"cogs.{extension}")
 
 @client.command()
+@commands.guild_only()
 async def unload(ctx, extension):
     client.unload_extension(f"cogs.{extension}")
 
 @client.command()
+@commands.guild_only()
 async def reload(ctx, extension):
     client.unload_extension(f"cogs.{extension}")
     client.load_extension(f"cogs.{extension}")
