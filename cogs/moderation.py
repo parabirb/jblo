@@ -10,6 +10,7 @@ class Moderation(commands.Cog):
 
     def __init__(self, client):
         self.client = client
+        self.warnings_delete.start()
 
     # mute
     @commands.command()
@@ -74,7 +75,7 @@ class Moderation(commands.Cog):
     @commands.command()
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
-    @commands.cooldown(1, 120, commands.BucketType.user)
+    @commands.cooldown(1, 30, commands.BucketType.user)
     async def warn(self, ctx, member : discord.Member, *, reason=None):
         if reason is None:
             embed = discord.Embed(description=f":octagonal_sign: Please provide a reason.", color=0xCD1F1F)
@@ -100,7 +101,7 @@ class Moderation(commands.Cog):
     @commands.command()
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
-    @commands.cooldown(1, 15, commands.BucketType.user)
+    @commands.cooldown(1, 2, commands.BucketType.user)
     async def warnings(self, ctx, member : discord.Member):
         infractions = collection.count_documents({"userid":member.id})
         if infractions > 1:
@@ -115,6 +116,11 @@ class Moderation(commands.Cog):
             embed = discord.Embed(title=f":warning: Infractions:", description=f"**{member.name}** has **0 warnings** :tada:", color=0x7289da)
             embed.add_field(name="NOTE:", value="Currently Diablo does NOT have a server-specific warnings count. The warning you see accounts for all warnings a person has.", inline=False)
             await ctx.send(embed=embed)
+
+    @tasks.loop(hours=730.001)
+    async def warnings_delete(self):
+        delete_infractions = collection.delete_many({})
+
     @warnings.error
     async def warnings_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
@@ -169,6 +175,15 @@ class Moderation(commands.Cog):
         elif isinstance(error, commands.BadArgument):
             embed=discord.Embed(description="Make sure you wrote the user name and discriminator (tagline) correctly.", color=0xCD1F1F)
             await ctx.send(embed=embed)
+
+    # Purge (clear) command
+    @commands.command()
+    @commands.guild_only()
+    @commands.has_permissions(manage_messages=True)
+    async def purge(self, ctx, amount=1):
+        await ctx.channel.purge(limit=amount)
+        embed = discord.Embed(description=f"{amount} messages cleared.", color=0x7289da)
+        await ctx.send(embed=embed)
 
 def setup(client):
     client.add_cog(Moderation(client))
