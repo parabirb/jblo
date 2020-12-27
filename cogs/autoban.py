@@ -11,6 +11,7 @@ class Autoban(commands.Cog):
 
     def __init__(self, client):
         self.client = client
+        self.server_check.start()
 
     # specify a channel where you want diablo log messages
     @commands.command()
@@ -42,11 +43,11 @@ class Autoban(commands.Cog):
 
     @commands.Cog.listener()
      # MAIN BOT FUNCTION, AUTO KICKS OFFENDERS
-    async def on_member_join(self, member : discord.Member):
+    async def on_member_join(self, member):
         offense = collection.find_one({"userid":member.id})
         if offense is not None:
             await member.ban(reason=offense["reason"])
-            bans_channel = discord.utils.get(member.text_channels, name='diablobans')
+            bans_channel = discord.utils.get(member.guild.text_channels, name='diablobans')
             if bans_channel is None:
                 overwrites = {
                     member.guild.default_role: discord.PermissionOverwrite(send_messages=False)
@@ -80,9 +81,17 @@ class Autoban(commands.Cog):
                     member_object = discord.utils.get(guild.members, id=person["userid"])
                     await member_object.ban(reason=person["reason"])
 
-                    bans_channel = discord.utils.get(guild.text_channels, name='diablobans')
-
-                    await diabloban_check()
+                    bans_channel = discord.utils.get(member_object.guild.text_channels, name='diablobans')
+                    if bans_channel is None:
+                        overwrites = {
+                            member_object.guild.default_role: discord.PermissionOverwrite(send_messages=False)
+                        }
+                        bans_channel = await member_object.guild.create_text_channel(
+                            name="diablobans",
+                            topic="Lists the offenders that join the server. :warning: MIGHT BE NSFW, DISABLE AT OWN RISK.",
+                            overwrites=overwrites,
+                            nsfw=True
+                        )
 
                     embed = discord.Embed(
                         description=f'**{member_object.name}** was spotted by Diablo and was banned',
