@@ -1,10 +1,10 @@
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 from pymongo import MongoClient
 
-cluster = MongoClient('lol')
-db = cluster["lol"]
-collection = db["lol"]
+cluster = MongoClient('redacted')
+db = cluster["redacted"]
+collection = db["redacted"]
 
 class Moderation(commands.Cog):
 
@@ -75,7 +75,7 @@ class Moderation(commands.Cog):
     @commands.command()
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
-    @commands.cooldown(1, 30, commands.BucketType.user)
+    @commands.cooldown(rate=1, per=3.5, type=commands.BucketType.user)
     async def warn(self, ctx, member : discord.Member, *, reason=None):
         if reason is None:
             embed = discord.Embed(description=f":octagonal_sign: Please provide a reason.", color=0xCD1F1F)
@@ -87,6 +87,12 @@ class Moderation(commands.Cog):
                 color=0x7289da
             )
             await member.send(embed=embed)
+            embed2 = discord.Embed(
+                title=f"::white_check_mark: **{member.name} Warned**",
+                description=f"{member} has been warned.**\n`Reason:` **{reason}**",
+                color=0x7289da
+            )
+            await ctx.send(embed=embed2)
             warning = {"userid":member.id}
             collection.insert_one(warning)
     @warn.error
@@ -101,7 +107,7 @@ class Moderation(commands.Cog):
     @commands.command()
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
-    @commands.cooldown(1, 2, commands.BucketType.user)
+    @commands.cooldown(rate=1, per=2, type=commands.BucketType.user)
     async def warnings(self, ctx, member : discord.Member):
         infractions = collection.count_documents({"userid":member.id})
         if infractions > 1:
