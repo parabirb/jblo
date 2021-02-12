@@ -1,6 +1,6 @@
 """
     DIABLO - A bot that bans pedos and zoos
-    (C) 2020 incipious. All rights reserved.
+    (C) 2020-2021 incipious. All rights reserved.
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
@@ -18,7 +18,7 @@ import discord
 import os
 from discord.ext import commands
 
-intents = discord.Intents.all()
+intents = discord.Intents.default()
 client = commands.Bot(command_prefix = 'd.', intents=intents)
 
 # CommandNotFound
@@ -42,17 +42,24 @@ async def on_command_error(ctx, error):
         embed = discord.Embed(description=f":octagonal_sign: Command is on cooldown. Try again in **{round(error.retry_after)}** seconds.", color=0xCD1F1F)
         await ctx.send(embed=embed)
 
-@client.command()
+# Owner Commands
+def is_bot_owner(ctx):
+    return ctx.author.id == #REDACTED
+
+@client.command(hidden=True)
+@commands.check(is_bot_owner)
 @commands.guild_only()
 async def load(ctx, extension):
     client.load_extension(f"cogs.{extension}")
 
-@client.command()
+@client.command(hidden=True)
+@commands.check(is_bot_owner)
 @commands.guild_only()
 async def unload(ctx, extension):
     client.unload_extension(f"cogs.{extension}")
 
-@client.command()
+@client.command(hidden=True)
+@commands.check(is_bot_owner)
 @commands.guild_only()
 async def reload(ctx, extension):
     client.unload_extension(f"cogs.{extension}")
@@ -62,4 +69,4 @@ for filename in os.listdir("./cogs"):
     if filename.endswith(".py"):
         client.load_extension(f"cogs.{filename[:-3]}")
 
-client.run('TOKEN')
+client.run('no')
