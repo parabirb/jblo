@@ -17,9 +17,16 @@
 import discord
 import os
 from discord.ext import commands
+import statcord
 
 intents = discord.Intents.default()
+intents.members = True
 client = commands.Bot(command_prefix = 'd.', intents=intents)
+
+#STATCORD SO I CAN SEE STATS
+key = "KEY"
+api = statcord.Client(client,key)
+api.start_loop()
 
 # CommandNotFound
 @client.event
@@ -44,7 +51,14 @@ async def on_command_error(ctx, error):
 
 # Owner Commands
 def is_bot_owner(ctx):
-    return ctx.author.id == #REDACTED
+    return ctx.author.id == # ID
+
+@client.event
+async def on_command(ctx):
+    try:
+        api.command_run(ctx)
+    except:
+        pass
 
 @client.command(hidden=True)
 @commands.check(is_bot_owner)
@@ -69,4 +83,4 @@ for filename in os.listdir("./cogs"):
     if filename.endswith(".py"):
         client.load_extension(f"cogs.{filename[:-3]}")
 
-client.run('no')
+client.run('TOKEN')
