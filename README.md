@@ -8,13 +8,12 @@ Our bot is designed to source data from the public to create a comprehensive dat
 https://top.gg/bot/751888323517349908
 
 ## How Diablo Works
-### The way Diablo works is very simple; you don't need to configure anything, except for maybe one thing.
-When Diablo has been invited into your server, the only thing you should do is place Diablo's role above all the server members (not including admin, but if you want that extra edge over your admins/server mods, I'd suggest so.)
+### Set up Diablo with ease:
+When Diablo has been invited into your server, the only thing you should do is place Diablo's role above all the server members (admin roles aren't necessary, unless you want to have an extra eye over your administration team.)
 
-The bot has two methods of autoban. The first is the ban that occurs if a member joins the server. If a member joins the server, the bot will try to match the user ID of the member with a potential match in the database, and if there is a match in the database, the bot will ban the user from the server before they even have a chance to see any of the channels.
+The bot has two ways of working: The first is the ban that occurs if a user on the database joins your server. If a member joins the server, the bot will try to match the user ID of the member with a potential match in the database, and if there is a match in the database, the bot will ban the user from the server before they even have a chance to see any of the channels.
 
-The second method is the loop method, which scans all the members of a server every 5 minutes for a potential database match. For example, if someone in your server gets added to Diablo, the bot will notice them on the database and they will be banned once the bot sees a database match.
-
+The latter is the task loop, which periodically scans all the servers, also scanning every single member in the server to attempt to match user IDs to the database. This allows for existing members in your server to be covered under Diablo's ban sequence if they are added to the database at any time.
 ## Commands
 ### Bot Prefix: `d.`
 The following is a list of commands that Diablo has. You can use `d.help` for a full list of commands using Diablo in a server.
