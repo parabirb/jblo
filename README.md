@@ -1,8 +1,8 @@
 # DIABLO
 ### DIABLO - Database Influenced Automated Ban List of Offenders. 
-DIABLO syncs up with our databases on predators, such as pedophiles and zoophiles, and prevents them from joining servers that have DIABLO. DIABLO relies on cutting-edge infrastructure to ban predators from your server in mere miliseconds. Keep your server safe from  any potential predators with DIABLO.
+DIABLO syncs up with our databases on predators, such as pedophiles and zoophiles, and prevents them from joining servers that have DIABLO. DIABLO relies on cutting-edge infrastructure to ban predators from your server in mere milliseconds. Keep your server safe from  any potential predators with DIABLO.
 
-While Discord can take anywhere from a few days to a week to process and take action regarding reports, there is a window in which predators can still freely interact on Discord before being banned. Diablo is designed to be a short-term solution to close that window. Diablo relies on sourced data from the public to create a comprehensive database to close off any entrances that predators might walk through. The more doors we close on predators, we progress towards a safer environemnt across discord, to prevent potential predators from disrupting server operations and preventing many potential indivduals from becoming victims of predatory behavior. 
+While Discord can take anywhere from a few days to a week to process and take action regarding reports, there is a window in which predators can still freely interact on Discord before being banned. Diablo is designed to be a short-term solution to close that window. Diablo relies on sourced data from the public to create a comprehensive database to close off any entrances that predators might walk through. The more doors we close on predators, we progress towards a safer environemnt across discord, to prevent potential predators from disrupting server operations and preventing many potential individuals from becoming victims of predatory behavior. 
 
 ## Invite Diablo to your server:
 https://top.gg/bot/751888323517349908
