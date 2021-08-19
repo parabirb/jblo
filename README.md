@@ -31,7 +31,7 @@ The following is a list of commands that Diablo currently has. You can use `d.he
 - `source` - Link to bot source page.
 - `whois [member]` - Information about member such as name, nicknames, account creation, etc... If member left blank, then it will show your information.
 - `vote` - Sends a voting link for Diablo in order to engage users to help grow Diablo. 
-- `whatdadogdoing` - Just a fun command that shows some adorable puppers 
+- `whatdadogdoing` - Just a fun command that shows some adorable puppers. 
 
 ### Moderation
 #### Moderation commands for Diablo.
