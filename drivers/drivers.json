@@ -1,0 +1,8 @@
+[
+    {
+        "driver": "MongoDB Driver",
+        "path": "mongo.js",
+        "author": "jblo team",
+        "description": "This is the MongoDB driver for jblo. This is the driver the main jblo instance uses."
+    }
+]
